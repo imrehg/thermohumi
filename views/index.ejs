@@ -1,0 +1,37 @@
+<html>
+ <head>
+ <title>Thermo-Humi Monitor</title>
+ <style>
+
+ </style>
+ </head>
+
+<body>
+<div id="readings">
+</div>
+
+ <script type='text/javascript' src="/js/jquery-2.0.3.min.js"></script>
+ <script type='text/javascript'>
+  var dataField;
+
+  var getLatest = function(rerun) {
+    $.ajax({
+      url: "/latest",
+    }).done(function(data) {
+       dataField.html("Temperature: " + data.temperature +" C<br>"+
+                      "Humidity: "+data.humidity+" %<br>"+
+                      "Dew point: "+data.dewpoint+" C<br>");
+    });
+    if (rerun) {
+      setInterval(function(){getLatest()},1000);
+    }
+  }
+
+  $(document).ready(function() {
+    dataField = $("#readings");
+
+    getLatest(true);
+  });
+ </script>
+</body>
+</html>
